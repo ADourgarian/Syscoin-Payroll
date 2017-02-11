@@ -11,7 +11,7 @@ import React from 'react';
 import Layout from '../../components/Layout';
 import Payroll from './Payroll';
 
-const title = 'Contact Us';
+const title = 'Syscoin Payroll';
 
 export default {
 
