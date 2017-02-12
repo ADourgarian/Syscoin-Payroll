@@ -17,26 +17,55 @@ class Payroll extends React.Component {
     title: PropTypes.string.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = { value: '' };
 
-  render() {
-    // all config options are optional
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+
     const client = new syscoin.Client({
       host: 'localhost',
       port: 8332,
-      user: 'username',
-      pass: 'password',
+      user: this.state.value,
+      pass: '',
       timeout: 30000,
     });
 
-    console.log(client);
+    client.cmd('getbalance', '*', 6, (err, balance, resHeaders) => {
+      if (err) return console.log('err: ', err);
+      console.log('Balance:', balance);
+    });
+  }
+
+  render() {
+    // all config options are optional
+    // const client = new syscoin.Client({
+    //   host: 'localhost',
+    //   port: 8332,
+    //   user: 'username',
+    //   pass: 'password',
+    //   timeout: 30000,
+    // });
+
+    // console.log(client);
 
     return (
-      <div className={s.root}>
-        <div className={s.container}>
-          <h1>{this.props.title}</h1>
-          <p>...</p>
-        </div>
-      </div>
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
     );
   }
 }
