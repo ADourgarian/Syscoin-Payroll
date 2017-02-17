@@ -32,31 +32,26 @@ class Payroll extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    const client = new syscoin.Client({
-      host: 'localhost',
-      port: 8332,
-      user: this.state.value,
-      pass: '',
-      timeout: 30000,
+    // fetch('http://localhost:8081/api/hello').then(function(response) {
+    //   response.json().then(function(x){
+    //     console.log(x.message);
+    //   })
+    // });
+
+    fetch('http://localhost:8081/rpc/getinfo',{
+      method: 'POST',
+      username: 'supersecret',
+      pass: 'supersecret'
+    }).then(function(response,err) {
+      response.json().then(function(x){
+        console.log(x);
+      })
     });
 
-    client.cmd('getbalance', '*', 6, (err, balance, resHeaders) => {
-      if (err) return console.log('err: ', err);
-      console.log('Balance:', balance);
-    });
   }
 
   render() {
-    // all config options are optional
-    // const client = new syscoin.Client({
-    //   host: 'localhost',
-    //   port: 8332,
-    //   user: 'username',
-    //   pass: 'password',
-    //   timeout: 30000,
-    // });
 
-    // console.log(client);
 
     return (
       <form onSubmit={this.handleSubmit}>
