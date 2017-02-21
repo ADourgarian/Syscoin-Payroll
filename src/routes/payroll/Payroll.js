@@ -19,18 +19,58 @@ class Payroll extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { value: '' };
+    this.state = { aliases: '' };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
+    const self = this;
+    self.setState({ aliases: event.target.value });
+    setTimeout(function(){
+      if (self.state.aliases.length >= 3) {
+        const x = JSON.stringify({
+          from: self.state.aliases,
+          stat: '5'
+        })
+        fetch('http://localhost:8081/rpc/aliasfilter', {
+          headers:{'Accept': 'application/json','Content-Type': 'application/json'},
+          method: 'POST',
+          username: 'rpcuser',
+          pass: 'askh3hjfhchasefhk3f8',
+          mode: 'cors',
+          body: x
+        }).then((response, err) => {
+          response.json().then((x) => {
+            console.log(x);
+          });
+        });
+      }; // end if
+    }, 1);
+  } // end handleChange
 
   handleSubmit(event) {
     event.preventDefault();
+    console.log(this.state.aliases);
+    var self = this;
+    const x = JSON.stringify({
+      aliasInfo: self.state.aliases
+    })
+    fetch('http://localhost:8081/rpc/aliasinfo', {
+      headers:{'Accept': 'application/json','Content-Type': 'application/json'},
+      method: 'POST',
+      username: 'rpcuser',
+      pass: 'askh3hjfhchasefhk3f8',
+      mode: 'cors',
+      body: JSON.stringify({
+        aliasInfo: self.state.aliases
+      })
+    }).then((response, err) => {
+      response.json().then((x) => {
+        console.log(x);
+      });
+    });
 
     // fetch('http://localhost:8081/api/hello').then(function(response) {
     //   response.json().then(function(x){
@@ -38,26 +78,24 @@ class Payroll extends React.Component {
     //   })
     // });
 
-    fetch('http://localhost:8081/rpc/getinfo',{
-      method: 'POST',
-      username: 'supersecret',
-      pass: 'supersecret'
-    }).then(function(response,err) {
-      response.json().then(function(x){
-        console.log(x);
-      })
-    });
-
+    // fetch('http://localhost:8081/rpc/getinfo', {
+    //   method: 'POST',
+    //   username: 'rpcuser',
+    //   pass: 'askh3hjfhchasefhk3f8',
+    // }).then((response, err) => {
+    //   response.json().then((x) => {
+    //     console.log(x);
+    //   });
+    // });
   }
 
   render() {
-
-
     return (
+      //<button onclick(this.handl)>
       <form onSubmit={this.handleSubmit}>
         <label>
-          Name:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
+          Search Aliases:
+          <input type="text" value={this.state.aliases} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
       </form>
