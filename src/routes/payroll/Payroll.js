@@ -7,10 +7,20 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import syscoin from 'syscoin';
 import React, { PropTypes } from 'react';
+import {sys} from '../../config.js';
+import classNames from 'classnames/bind';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Payroll.css';
+import Select from 'react-select';
+import selectStyles from 'react-select/dist/react-select.css';
+import api from './api.js'
+
+//componenets
+import Aliases from './components/search-aliases';
+
+const cx = classNames.bind(selectStyles);
+
 
 class Payroll extends React.Component {
   static propTypes = {
@@ -19,7 +29,10 @@ class Payroll extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { aliases: '' };
+    this.state = {
+      searchAlias: '',
+      returnedAliases: []
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,80 +40,82 @@ class Payroll extends React.Component {
 
   handleChange(event) {
     const self = this;
-    self.setState({ aliases: event.target.value });
+    self.setState({ searchAlias: event.target.value });
+    console.log(api);
+
     setTimeout(function(){
-      if (self.state.aliases.length >= 3) {
-        const x = JSON.stringify({
-          from: self.state.aliases,
-          stat: '5'
-        })
-        fetch('http://localhost:8081/rpc/aliasfilter', {
-          headers:{'Accept': 'application/json','Content-Type': 'application/json'},
-          method: 'POST',
-          username: 'rpcuser',
-          pass: 'askh3hjfhchasefhk3f8',
-          mode: 'cors',
-          body: x
-        }).then((response, err) => {
-          response.json().then((x) => {
-            console.log(x);
+      if (self.state.searchAlias.length >= 3) {
+        api.getAliasList(self.state.searchAlias).then((x) => {
+          self.state.returnedAliases = [];
+          x.forEach((e,i,a) => {
+            self.state.returnedAliases.push({
+              name: e.name,
+              address: e.address
+            });
           });
         });
-      }; // end if
-    }, 1);
+      }
+    });
   } // end handleChange
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state.aliases);
     var self = this;
     const x = JSON.stringify({
-      aliasInfo: self.state.aliases
+      aliasInfo: self.state.searchAlias
     })
-    fetch('http://localhost:8081/rpc/aliasinfo', {
-      headers:{'Accept': 'application/json','Content-Type': 'application/json'},
-      method: 'POST',
-      username: 'rpcuser',
-      pass: 'askh3hjfhchasefhk3f8',
-      mode: 'cors',
-      body: JSON.stringify({
-        aliasInfo: self.state.aliases
-      })
-    }).then((response, err) => {
-      response.json().then((x) => {
-        console.log(x);
-      });
-    });
+    console.log(self.state.returnedAliases)
+
+    // fetch('http://localhost:8081/rpc/aliasinfo', {
+    //   headers:{'Accept': 'application/json','Content-Type': 'application/json'},
+    //   method: 'POST',
+    // username: sys.username,
+    // password: sys.password,
+    //   mode: 'cors',
+    //   body: JSON.stringify({
+    //     aliasInfo: self.state.aliases
+    //   })
+    // }).then((response, err) => {
+    //   response.json().then((x) => {
+    //   });
+    // });
 
     // fetch('http://localhost:8081/api/hello').then(function(response) {
     //   response.json().then(function(x){
-    //     console.log(x.message);
     //   })
     // });
 
     // fetch('http://localhost:8081/rpc/getinfo', {
     //   method: 'POST',
-    //   username: 'rpcuser',
-    //   pass: 'askh3hjfhchasefhk3f8',
+      // username: sys.username,
+      // password: sys.password,
     // }).then((response, err) => {
     //   response.json().then((x) => {
-    //     console.log(x);
     //   });
     // });
   }
 
   render() {
+    // const getOptions = (input) => {
+    //   // in order to keep load times down for needlessly short inputs
+    //   if (input.length <= 2){
+    //       return new Promise((resolve) => { resolve(val); });
+    //   } else {
+    //     return api.getAliasList(input);
+    //   }
+    // }
     return (
-      //<button onclick(this.handl)>
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Search Aliases:
-          <input type="text" value={this.state.aliases} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <div className={s.root}>
+        <div className={s.container}>
+          <form onSubmit={this.handleSubmit}>
+            <div className="section">
+              <Aliases label="Aliases (Async with fetch.js)" />
+            </div>
+          </form>
+        </div>
+      </div>
     );
   }
 }
 
-export default withStyles(s)(Payroll);
+export default withStyles(selectStyles)(withStyles(s)(Payroll));

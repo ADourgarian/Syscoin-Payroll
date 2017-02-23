@@ -14,6 +14,13 @@ export const host = process.env.WEBSITE_HOSTNAME || `localhost:${port}`;
 
 export const databaseUrl = process.env.DATABASE_URL || 'sqlite:database.sqlite';
 
+export const sys = {
+  sys: {
+    username: process.env.sysUsername || 'rpcuser',
+    password: process.env.sysPass || 'askh3hjfhchasefhk3f8'
+  },
+};
+
 export const analytics = {
 
   // https://analytics.google.com/
