@@ -36,6 +36,7 @@ class Payroll extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.addAlias = this.addAlias.bind(this);
   }
 
   handleChange(event) {
@@ -57,14 +58,14 @@ class Payroll extends React.Component {
       }
     });
   } // end handleChange
-
-  handleSubmit(event) {
-    event.preventDefault();
+  addAlias(){
+    console.log('add alias', this.state.value);
+  }
+  handleSubmit(e,x,y) {
+    e.preventDefault();
     var self = this;
-    const x = JSON.stringify({
-      aliasInfo: self.state.searchAlias
-    })
-    console.log(self.state.returnedAliases)
+    console.log(self.state.value);
+    //console.log(self.state.returnedAliases);
 
     // fetch('http://localhost:8081/rpc/aliasinfo', {
     //   headers:{'Accept': 'application/json','Content-Type': 'application/json'},
@@ -107,7 +108,7 @@ class Payroll extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <form onSubmit={this.handleSubmit}>
+          <form>
             <div className="section">
               <Aliases label="Aliases (Async with fetch.js)" />
             </div>
