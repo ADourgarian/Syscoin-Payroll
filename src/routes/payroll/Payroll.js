@@ -32,60 +32,20 @@ class Payroll extends React.Component {
     super(props);
     this.state = {
       searchAlias: '',
-      SelectedAliases: []
+      selectedAliases: []
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAddAlias = this.handleAddAlias.bind(this);
   }
 
   handleAddAlias (alias) {
-
+    this.setState({
+      selectedAliases: this.state.selectedAliases.push(alias),
+    });
+    console.log(this.state.selectedAliases);
   }
-  handleSubmit(e,x,y) {
-    e.preventDefault();
-    var self = this;
-    //console.log(self.state.value);
-    //console.log(self.state.returnedAliases);
-
-    // fetch('http://localhost:8081/rpc/aliasinfo', {
-    //   headers:{'Accept': 'application/json','Content-Type': 'application/json'},
-    //   method: 'POST',
-    // username: sys.username,
-    // password: sys.password,
-    //   mode: 'cors',
-    //   body: JSON.stringify({
-    //     aliasInfo: self.state.aliases
-    //   })
-    // }).then((response, err) => {
-    //   response.json().then((x) => {
-    //   });
-    // });
-
-    // fetch('http://localhost:8081/api/hello').then(function(response) {
-    //   response.json().then(function(x){
-    //   })
-    // });
-
-    // fetch('http://localhost:8081/rpc/getinfo', {
-    //   method: 'POST',
-      // username: sys.username,
-      // password: sys.password,
-    // }).then((response, err) => {
-    //   response.json().then((x) => {
-    //   });
-    // });
-  }
-
   render() {
-    // const getOptions = (input) => {
-    //   // in order to keep load times down for needlessly short inputs
-    //   if (input.length <= 2){
-    //       return new Promise((resolve) => { resolve(val); });
-    //   } else {
-    //     return api.getAliasList(input);
-    //   }
-    // }
+
     return (
       <div className={s.root}>
         <div className={s.container}>
@@ -93,7 +53,7 @@ class Payroll extends React.Component {
             <Aliases addAlias={this.handleAddAlias} label="Aliases (Async with fetch.js)" />
           </div>
           <div className="section">
-            <Timecards aliases={this.SelectedAliases} label="Aliases (Async with fetch.js)" />
+            <Timecards aliases={this.state.selectedAliases} label="Aliases (Async with fetch.js)" />
           </div>
         </div>
       </div>
