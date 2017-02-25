@@ -17,10 +17,11 @@ const Aliases = React.createClass({
     var content;
     console.log("HI",this.props.aliases);
     if (this.props.aliases.length > 0) {
-      var aliases = this.props.aliases.map(function(alias) {
-        return <li className="timecardListItem">{alias.name}: {alias.address}</li>;
+      var aliases = this.props.aliases.map(function(alias,i) {
+        return <li className="timecardListItem" key={i}>{alias.name} {alias.address}</li>;
       });
-      content = <ul className="timecardList">{items}</ul>
+      console.log(aliases);
+      content = <ul className="timecardList">{aliases}</ul>
     } else {
       content = <p>No items matching this filter</p>;
     }

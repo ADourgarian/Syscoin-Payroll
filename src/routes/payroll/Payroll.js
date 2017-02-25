@@ -39,10 +39,13 @@ class Payroll extends React.Component {
   }
 
   handleAddAlias (alias) {
+    const x = this.state.selectedAliases;
+    x.push(alias)
     this.setState({
-      selectedAliases: this.state.selectedAliases.push(alias),
+      selectedAliases: x,
     });
-    console.log(this.state.selectedAliases);
+      console.log("XXX",this.state.selectedAliases);
+
   }
   render() {
 
