@@ -76,7 +76,7 @@ const config = {
         },
       },
       {
-        test: /\.global\.css$|react-select.css/,
+        test: /\.global\.css$|react-select.css|fixed-data-table.css/,
         use: [
           {
             loader: 'isomorphic-style-loader',
@@ -106,7 +106,7 @@ const config = {
       {
         test: /\.css/,
         exclude: [
-            /\.global\.css$|react-select.css/
+            /\.global\.css$|react-select.css|fixed-data-table.css/
         ],
         use: [
           {

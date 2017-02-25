@@ -14,14 +14,14 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Payroll.css';
 import Select from 'react-select';
 import selectStyles from 'react-select/dist/react-select.css';
+import tableStyles from 'fixed-data-table/dist/fixed-data-table.css';
 import api from './api.js'
 
 //componenets
 import Aliases from './components/search-aliases';
 import Timecards from './components/timecards';
 
-const cx = classNames.bind(selectStyles);
-
+const cx = classNames.bind(selectStyles).bind(tableStyles);
 
 class Payroll extends React.Component {
   static propTypes = {
@@ -64,4 +64,4 @@ class Payroll extends React.Component {
   }
 }
 
-export default withStyles(selectStyles)(withStyles(s)(Payroll));
+export default withStyles(tableStyles)(withStyles(selectStyles)(withStyles(s)(Payroll)));
