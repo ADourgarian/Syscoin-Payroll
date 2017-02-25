@@ -5,14 +5,12 @@ import {sys} from '../../../config.js';
 
 
 const Aliases = React.createClass({
-	displayName: 'Aliases',
+	displayName: 'Timecards',
 	propTypes: {
 		label: React.PropTypes.string,
 	},
 	getInitialState () {
 		return {
-			backspaceRemoves: true,
-			multi: true
 		};
 	},
 	onChange (value) {

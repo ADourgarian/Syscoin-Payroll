@@ -18,6 +18,7 @@ import api from './api.js'
 
 //componenets
 import Aliases from './components/search-aliases';
+import Timecards from './components/timecards';
 
 const cx = classNames.bind(selectStyles);
 
@@ -31,7 +32,7 @@ class Payroll extends React.Component {
     super(props);
     this.state = {
       searchAlias: '',
-      returnedAliases: []
+      SelectedAliases: []
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -90,6 +91,9 @@ class Payroll extends React.Component {
         <div className={s.container}>
           <div className="section">
             <Aliases addAlias={this.handleAddAlias} label="Aliases (Async with fetch.js)" />
+          </div>
+          <div className="section">
+            <Timecards aliases={this.SelectedAliases} label="Aliases (Async with fetch.js)" />
           </div>
         </div>
       </div>
