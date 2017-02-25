@@ -34,37 +34,17 @@ class Payroll extends React.Component {
       returnedAliases: []
     };
 
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.addAlias = this.addAlias.bind(this);
+    this.handleAddAlias = this.handleAddAlias.bind(this);
   }
 
-  handleChange(event) {
-    const self = this;
-    self.setState({ searchAlias: event.target.value });
-    console.log(api);
+  handleAddAlias (alias) {
 
-    setTimeout(function(){
-      if (self.state.searchAlias.length >= 3) {
-        api.getAliasList(self.state.searchAlias).then((x) => {
-          self.state.returnedAliases = [];
-          x.forEach((e,i,a) => {
-            self.state.returnedAliases.push({
-              name: e.name,
-              address: e.address
-            });
-          });
-        });
-      }
-    });
-  } // end handleChange
-  addAlias(){
-    console.log('add alias', this.state.value);
   }
   handleSubmit(e,x,y) {
     e.preventDefault();
     var self = this;
-    console.log(self.state.value);
+    //console.log(self.state.value);
     //console.log(self.state.returnedAliases);
 
     // fetch('http://localhost:8081/rpc/aliasinfo', {
@@ -108,11 +88,9 @@ class Payroll extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <form>
-            <div className="section">
-              <Aliases label="Aliases (Async with fetch.js)" />
-            </div>
-          </form>
+          <div className="section">
+            <Aliases addAlias={this.handleAddAlias} label="Aliases (Async with fetch.js)" />
+          </div>
         </div>
       </div>
     );

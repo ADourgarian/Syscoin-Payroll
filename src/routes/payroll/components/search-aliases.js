@@ -3,6 +3,7 @@ import Select from 'react-select';
 import fetch from 'isomorphic-fetch';
 import {sys} from '../../../config.js';
 
+const selectedAlias = {};
 
 const Aliases = React.createClass({
 	displayName: 'Aliases',
@@ -20,8 +21,9 @@ const Aliases = React.createClass({
 			value: value,
 		});
 	},
-	addAlias () {
-		console.log(this.state.value);
+	AddAlias (e) {
+		e.preventDefault();
+    this.props.addAlias(this.state.value);
 	},
 	getUsers (input) {
 		if (!input) {
@@ -52,7 +54,7 @@ const Aliases = React.createClass({
 				<h3 className="section-heading">{this.props.label}</h3>
 				<Select.Async value={this.state.value} onChange={this.onChange} onValueClick={this.gotoUser} valueKey="address" labelKey="name" loadOptions={this.getUsers} backspaceRemoves={this.state.backspaceRemoves} />
 				<div className="hint">This example uses fetch.js for showing Async options with Promises</div>
-				<button onClick={this.addAlias}>Add Alias</button>
+				<button onClick={this.AddAlias}>Add Alias</button>
 			</div>
 		);
 	}
