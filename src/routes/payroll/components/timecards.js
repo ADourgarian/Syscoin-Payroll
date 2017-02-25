@@ -4,18 +4,6 @@ import fetch from 'isomorphic-fetch';
 import {sys} from '../../../config.js';
 import {Table, Column, Cell} from 'fixed-data-table';
 
-const PaymentLine = (name, address, payAmount, readOnly) => {
-  if(!name) name = '';
-  if(!address) address = '';
-  if(!payAmount) payAmount = 0;
-  if(!readOnly) readOnly = false;
-  return obj = {
-    name:name,
-    address:address,
-    payAmount:payAmount,
-    readOnly: readOnly
-  }
-}
 
 const Aliases = React.createClass({
 	displayName: 'Timecards',
@@ -26,10 +14,16 @@ const Aliases = React.createClass({
 		return {
 		};
 	},
-  // savePayAmount (event){
-  //   console.log(event.target.value);
-  //   console.log(event.target.index);
-  // },
+  savePayAmount (event){
+    var target = event.target;
+    var aliases = this.props.aliases;
+    console.log(target);
+    // for (var alias in aliases){
+    //   if (alias.id = target.id){
+    //     alias.payAmount = target.payAmount;
+    //   }
+    // }
+  },
 	render () {
     var content = [];
     var totalPayAmount = 0;
@@ -39,7 +33,6 @@ const Aliases = React.createClass({
       content = [{name:'', address:'', payAmount: 0, readOnly: true}];
     } else {
       content = this.props.aliases.slice(0);
-
       content.forEach(function(e,i){
         if (!e.payAmount){
           e.PayAmount = 0;
@@ -47,6 +40,7 @@ const Aliases = React.createClass({
         if (!e.readOnly){
           e.readOnly = false;
         }
+        console.log("item",i,'   ',e.id);
         totalPayAmount += e.payAmount;
       })
     }
@@ -87,6 +81,7 @@ const Aliases = React.createClass({
                   <input
                    //index={rowIndex}
                     type="number"
+                    id={content[rowIndex].id}
                     min="0"
                     readOnly={content[rowIndex].readOnly}
                     className="payAmount"
