@@ -38,6 +38,7 @@ class Payroll extends React.Component {
     };
 
     this.handleAddAlias = this.handleAddAlias.bind(this);
+    this.handleSavePayAmounts = this.handleSavePayAmounts.bind(this);
   }
 
   handleAddAlias (nextAlias) {
@@ -45,13 +46,19 @@ class Payroll extends React.Component {
     const nextAliasId = this.state.nextAliasId;
     nextAlias.id = nextAliasId;
     nextAlias.payAmount = 0;
-    nextAlias.readOnly = 0;
+    nextAlias.readOnly = false;
     aliases.push(nextAlias);
     this.setState({
       selectedAliases: aliases,
       nextAliasId: nextAliasId + 1,
     });
     console.log("XXX",this.state.selectedAliases);
+  }
+  handleSavePayAmounts (aliases){
+    this.setState ( {
+        selectedAliases: aliases,
+      }
+    )
   }
 
   render() {
@@ -60,10 +67,13 @@ class Payroll extends React.Component {
       <div className={s.root}>
         <div className={s.container}>
           <div className="section">
-            <Aliases addAlias={this.handleAddAlias} label="Aliases (Async with fetch.js)" />
+            <Aliases addAlias={this.handleAddAlias} label="Fetch Aliases" />
           </div>
           <div className="section">
-            <Timecards aliases={this.state.selectedAliases} label="Aliases (Async with fetch.js)" />
+            <Timecards aliases={this.state.selectedAliases} savePayAmounts={this.handleSavePayAmounts} label="Chosse Alias Pay Amounts" />
+          </div>
+          <div className="section">
+            <Pay aliases={this.state.selectedAliases} label="Pay Employees" />
           </div>
         </div>
       </div>

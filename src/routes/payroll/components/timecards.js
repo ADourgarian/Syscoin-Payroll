@@ -15,27 +15,33 @@ const Aliases = React.createClass({
 		};
 	},
   savePayAmount (event){
-    var target = event.target;
-    var aliases = this.props.aliases;
-    console.log(target);
-    // for (var alias in aliases){
-    //   if (alias.id = target.id){
-    //     alias.payAmount = target.payAmount;
-    //   }
-    // }
+    var targetID = parseInt(event.target.id);
+    var targetValue = parseFloat(event.target.value);
+    console.log('FIRST', targetID, targetValue);
+    var aliases = this.props.aliases.slice(0);
+    for (var i in aliases){
+      console.log("alias", aliases[i].id)
+
+      if (aliases[i].id == targetID){
+        aliases[i].payAmount = targetValue;
+        console.log(targetID, targetValue);
+      }
+    }
+    console.log(aliases);
+    this.props.savePayAmounts(aliases);
+
   },
 	render () {
     var content = [];
     var totalPayAmount = 0;
     console.log("HI",this.props.aliases);
 
-    if (this.props.aliases.length<0){
-      content = [{name:'', address:'', payAmount: 0, readOnly: true}];
-    } else {
+    if (this.props.aliases.length>0){
       content = this.props.aliases.slice(0);
       content.forEach(function(e,i){
+        console.log(e.payAmount);
         if (!e.payAmount){
-          e.PayAmount = 0;
+          e.payAmount = 0;
         }
         if (!e.readOnly){
           e.readOnly = false;
@@ -45,11 +51,9 @@ const Aliases = React.createClass({
       })
     }
 
-    content.push({name:"Payment Totals:", address: '', payAmount:totalPayAmount, readOnly: true})
-
     return (
       <div className="payroll">
-        <h4>Results</h4>
+        <h3 className="section-heading">{this.props.label}</h3>
         <Table
           rowHeight={50}
           rowsCount={content.length}
@@ -57,7 +61,7 @@ const Aliases = React.createClass({
           height={300}
           headerHeight={50}>
           <Column
-            header={<Cell>Col 3</Cell>}
+            header={<Cell>Alias</Cell>}
               cell={({rowIndex, ...props}) => (
                 <Cell {...props}>
                   {content[rowIndex].name}
@@ -79,7 +83,6 @@ const Aliases = React.createClass({
               cell={({rowIndex, ...props}) => (
                 <Cell {...props}>
                   <input
-                   //index={rowIndex}
                     type="number"
                     id={content[rowIndex].id}
                     min="0"

@@ -22,9 +22,9 @@ const Aliases = React.createClass({
 	},
 	AddAlias (e) {
 		e.preventDefault();
-    this.props.addAlias(this.state.value);
+    this.props.addAlias(JSON.parse(JSON.stringify(this.state.value)));
 	},
-	getUsers (input) {
+	getAliases (input) {
 		if (!input) {
 			return Promise.resolve({ options: [] });
 		}
@@ -51,7 +51,7 @@ const Aliases = React.createClass({
 		return (
 			<div className="section">
 				<h3 className="section-heading">{this.props.label}</h3>
-				<Select.Async value={this.state.value} onChange={this.onChange} onValueClick={this.gotoUser} valueKey="address" labelKey="name" loadOptions={this.getUsers} backspaceRemoves={this.state.backspaceRemoves} />
+				<Select.Async value={this.state.value} onChange={this.onChange} onValueClick={this.gotoUser} valueKey="address" labelKey="name" loadOptions={this.getAliases} backspaceRemoves={this.state.backspaceRemoves} />
 				<div className="hint">This example uses fetch.js for showing Async options with Promises</div>
 				<button onClick={this.AddAlias}>Add Alias</button>
 			</div>
