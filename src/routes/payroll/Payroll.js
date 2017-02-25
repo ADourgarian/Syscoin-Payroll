@@ -20,6 +20,7 @@ import api from './api.js'
 //componenets
 import Aliases from './components/search-aliases';
 import Timecards from './components/timecards';
+import Pay from './components/pay';
 
 const cx = classNames.bind(selectStyles).bind(tableStyles);
 
